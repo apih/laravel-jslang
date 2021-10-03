@@ -1,0 +1,43 @@
+{
+    "name": "apih/laravel-jslang",
+    "description": "Language localization in JavaScript, for Laravel-based application",
+    "keywords": [
+        "apih",
+        "php",
+        "laravel",
+        "laravel-jslang",
+        "javascript",
+        "localization",
+        "translation"
+    ],
+    "homepage": "https://github.com/apih/laravel-jslang",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": ":Mohd Hafizuddin M Marzuki",
+            "email": "hafizuddin_83@yahoo.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Apih\\JsLang\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Apih\\JsLang\\JsLangServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
