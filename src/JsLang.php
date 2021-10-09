@@ -49,6 +49,12 @@ class JsLang
                 if ($this->filesystem->exists($filepath)) {
                     $contents = json_decode($this->filesystem->get($filepath), true);
                 }
+
+                foreach ($contents as $key => $value) {
+                    if ($key === $value) {
+                        unset($contents[$key]);
+                    }
+                }
             }
         } elseif ($type === 'all') {
             return $this->getContents($locale, 'short', $minify) . PHP_EOL . $this->getContents($locale, 'long', $minify);
