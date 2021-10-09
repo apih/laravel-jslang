@@ -28,7 +28,6 @@ class GenerateCommand extends Command
      */
     protected Filesystem $filesystem;
     protected JsLang $jsLang;
-    protected string $publicLangPath;
     protected string $hashAlgo;
     protected int|null $hashLength;
     protected array $hashes = [];
@@ -45,11 +44,10 @@ class GenerateCommand extends Command
 
         $this->filesystem = $filesystem;
         $this->jsLang = $jsLang;
-        $this->publicLangPath = public_path(config('jslang.public_lang_dir'));
         $this->hashAlgo = 'crc32';
         $this->hashLength = null;
 
-        $this->filesystem->ensureDirectoryExists($this->publicLangPath);
+        $this->filesystem->ensureDirectoryExists($this->jsLang->publicLangPath());
     }
 
     /**
@@ -73,7 +71,7 @@ class GenerateCommand extends Command
         }
 
         // Store hashes
-        $this->filesystem->put($this->publicLangPath . '/hashes.json', json_encode($this->hashes, JSON_PRETTY_PRINT));
+        $this->filesystem->put($this->jsLang->publicLangPath('hashes.json'), json_encode($this->hashes, JSON_PRETTY_PRINT));
 
         $this->info('JS files for front-end language localization has been created successfully!');
     }
@@ -91,7 +89,7 @@ class GenerateCommand extends Command
         $hash = config('jslang.hash_prefix') . substr(hash($this->hashAlgo, $contents), 0, $this->hashLength);
         $this->hashes["{$locale}.{$type}"] = $hash;
 
-        $this->filesystem->ensureDirectoryExists("{$this->publicLangPath}/{$locale}");
-        $this->filesystem->put("{$this->publicLangPath}/{$locale}/{$type}.{$hash}.js", $contents);
+        $this->filesystem->ensureDirectoryExists($this->jsLang->publicLangPath($locale));
+        $this->filesystem->put($this->jsLang->publicLangPath("{$locale}/{$type}.{$hash}.js"), $contents);
     }
 }

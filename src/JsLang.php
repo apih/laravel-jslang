@@ -84,7 +84,7 @@ class JsLang
      */
     public function getUrl(string $locale, string $type, bool $absolute = true)
     {
-        $file = public_path(config('jslang.public_lang_dir') . '/hashes.json');
+        $file = $this->publicLangPath('hashes.json');
         $any = '';
 
         if ($this->filesystem->exists($file)) {
@@ -93,5 +93,16 @@ class JsLang
         }
 
         return route(config('jslang.route_name'), ['locale' => $locale, 'type' => $type, 'any' => $any], $absolute);
+    }
+
+    /**
+     * Get the path to the public language directory.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    public function publicLangPath($path = '')
+    {
+        return public_path(config('jslang.public_lang_dir') . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR));
     }
 }

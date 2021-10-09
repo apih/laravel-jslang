@@ -2,6 +2,7 @@
 
 namespace Apih\JsLang\Commands;
 
+use Apih\JsLang\JsLang;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -21,20 +22,25 @@ class ClearCommand extends Command
      */
     protected $description = 'Delete all generated JavaScript files';
 
-    /** @var \Illuminate\Filesystem\Filesystem */
+    /**
+     * Properties.
+     */
     protected Filesystem $filesystem;
+    protected JsLang $jsLang;
 
     /**
      * Create a new command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $filesystem
+     * @param  \Apih\JsLang\JsLang  $jsLang
      * @return void
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, JsLang $jsLang)
     {
         parent::__construct();
 
         $this->filesystem = $filesystem;
+        $this->jsLang = $jsLang;
     }
 
     /**
@@ -52,7 +58,7 @@ class ClearCommand extends Command
         }
 
         // Delete all generated files
-        $files = $this->filesystem->allFiles(public_path(config('jslang.public_lang_dir')));
+        $files = $this->filesystem->allFiles($this->jsLang->publicLangPath());
 
         foreach ($files as $file) {
             $this->filesystem->delete($file);
