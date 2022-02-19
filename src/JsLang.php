@@ -30,7 +30,7 @@ class JsLang
     public function getContents(string $locale, string $type, bool $minify = false)
     {
         $namespace = trim(config('jslang.namespace'), '.') . ".{$locale}.{$type}";
-        $langPath = resource_path('lang');
+        $langPath = app()->langPath();
 
         if ($type === 'short') {
             $contents = [];
