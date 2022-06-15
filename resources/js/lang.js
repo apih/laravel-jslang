@@ -77,7 +77,7 @@
 
         if (key.indexOf('.') !== -1 && key.indexOf(' ') === -1) {
             message = key.split('.').reduce(function (obj, key) {
-                return obj[key];
+                return typeof obj === 'object' ? obj[key] : '';
             }, messages[locale].short);
 
             found = message ? true : false;
