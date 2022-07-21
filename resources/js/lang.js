@@ -117,7 +117,7 @@
         }
 
         let message = chooseMessage(key, number);
-        replace.count = number;
+        replace = Object.assign({ count: number }, replace);
 
         return makeReplacements(message, replace);
     }
