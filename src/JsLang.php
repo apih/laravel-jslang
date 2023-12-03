@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 class JsLang
 {
     protected Filesystem $filesystem;
+    protected array $paths;
 
     /**
      * Create a new instance.
@@ -16,7 +17,17 @@ class JsLang
      */
     public function __construct(Filesystem $filesystem)
     {
+        $paths = [
+            base_path('vendor/laravel/framework/src/Illuminate/Translation/lang'),
+            app()->langPath(),
+        ];
+
+        if (version_compare(app()->version(), '10', '<')) {
+            array_shift($paths);
+        }
+
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
     }
 
     /**
@@ -30,29 +41,44 @@ class JsLang
     public function getContents(string $locale, string $type, bool $minify = false)
     {
         $namespace = trim(config('jslang.namespace'), '.') . ".{$locale}.{$type}";
-        $langPath = app()->langPath();
 
         if ($type === 'short') {
             $contents = [];
-            $files = $this->filesystem->files("{$langPath}/{$locale}");
 
-            foreach ($files as $file) {
-                $contents[basename($file, '.php')] = include $file;
-            }
-        } elseif ($type === 'long') {
-            if ($locale === 'en') {
-                $contents = [];
-            } else {
-                $contents = [];
-                $filepath = "{$langPath}/{$locale}.json";
+            foreach ($this->paths as $path) {
+                $directory = "{$path}/{$locale}";
 
-                if ($this->filesystem->exists($filepath)) {
-                    $contents = json_decode($this->filesystem->get($filepath), true);
+                if ($this->filesystem->missing($directory)) {
+                    continue;
                 }
 
-                foreach ($contents as $key => $value) {
-                    if ($key === $value) {
-                        unset($contents[$key]);
+                $files = $this->filesystem->files($directory);
+
+                foreach ($files as $file) {
+                    $key = basename($file, '.php');
+
+                    if (!array_key_exists($key, $contents)) {
+                        $contents[$key] = [];
+                    }
+
+                    $contents[$key] = array_merge($contents[$key], include $file);
+                }
+            }
+        } elseif ($type === 'long') {
+            $contents = [];
+
+            if ($locale !== 'en') {
+                foreach ($this->paths as $path) {
+                    $filepath = "{$path}/{$locale}.json";
+
+                    if ($this->filesystem->exists($filepath)) {
+                        $contents = array_merge($contents, json_decode($this->filesystem->get($filepath), true));
+                    }
+
+                    foreach ($contents as $key => $value) {
+                        if ($key === $value) {
+                            unset($contents[$key]);
+                        }
                     }
                 }
             }
