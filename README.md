@@ -9,7 +9,7 @@ This package provides the ability to use all language localization messages from
 ## Requirements
 
 - PHP: `^8.0`
-- Laravel: `^8.0|^9.0|^10.0`
+- Laravel: `^8.0|^9.0|^10.0|^11.0`
 
 ## Installation
 
