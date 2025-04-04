@@ -32,7 +32,7 @@ class GenerateCommand extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct(Filesystem $filesystem, JsLang $jsLang): void
+    public function __construct(Filesystem $filesystem, JsLang $jsLang)
     {
         parent::__construct();
 
