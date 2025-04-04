@@ -4,6 +4,7 @@ namespace Apih\JsLang;
 
 use Apih\JsLang\Commands\ClearCommand;
 use Apih\JsLang\Commands\GenerateCommand;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,15 +19,10 @@ class JsLangServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/jslang.php', 'jslang');
 
         // Register the service
-        $service = function ($app) {
-            return new JsLang($app->get(Filesystem::class));
-        };
-
-        if (config('jslang.scoped_singleton')) {
-            $this->app->scoped(JsLang::class, $service);
-        } else {
-            $this->app->singleton(JsLang::class, $service);
-        }
+        $this->app->{config('jslang.scoped_singleton') ? 'scoped' : 'singleton'}(
+            JsLang::class,
+            static fn (Application $app) => new JsLang($app->get(Filesystem::class))
+        );
     }
 
     /**
