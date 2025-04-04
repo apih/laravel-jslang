@@ -11,9 +11,6 @@ class JsLang
 
     /**
      * Create a new instance.
-     *
-     * @param  \Illuminate\Filesystem\Filesystem  $filesystem
-     * @return void
      */
     public function __construct(Filesystem $filesystem)
     {
@@ -32,13 +29,8 @@ class JsLang
 
     /**
      * Get the contents of the localization messages by locale and type.
-     *
-     * @param  string  $locale
-     * @param  string  $type
-     * @param  bool  $minify
-     * @return string
      */
-    public function getContents(string $locale, string $type, bool $minify = false)
+    public function getContents(string $locale, string $type, bool $minify = false): string
     {
         $namespace = trim(config('jslang.namespace'), '.') . ".{$locale}.{$type}";
 
@@ -108,13 +100,8 @@ class JsLang
 
     /**
      * Get the URL for the JavaScript language localization file by locale and type.
-     *
-     * @param  string  $locale
-     * @param  string  $type
-     * @param  bool  $absolute
-     * @return string
      */
-    public function getUrl(string $locale, string $type, bool $absolute = true)
+    public function getUrl(string $locale, string $type, bool $absolute = true): string
     {
         $file = $this->publicLangPath('hashes.json');
         $any = '';
@@ -129,11 +116,8 @@ class JsLang
 
     /**
      * Get the path to the public language directory.
-     *
-     * @param  string  $path
-     * @return string
      */
-    public function publicLangPath($path = '')
+    public function publicLangPath(string $path = ''): string
     {
         return public_path(config('jslang.public_lang_dir') . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR));
     }

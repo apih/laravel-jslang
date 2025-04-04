@@ -22,18 +22,11 @@ class ClearCommand extends Command
      */
     protected $description = 'Delete all generated JavaScript files';
 
-    /**
-     * Properties.
-     */
     protected Filesystem $filesystem;
     protected JsLang $jsLang;
 
     /**
      * Create a new command instance.
-     *
-     * @param  \Illuminate\Filesystem\Filesystem  $filesystem
-     * @param  \Apih\JsLang\JsLang  $jsLang
-     * @return void
      */
     public function __construct(Filesystem $filesystem, JsLang $jsLang)
     {
@@ -45,10 +38,8 @@ class ClearCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // Delete all caches
         foreach (config('jslang.locales') as $locale) {

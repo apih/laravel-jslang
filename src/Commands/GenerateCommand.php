@@ -23,9 +23,6 @@ class GenerateCommand extends Command
      */
     protected $description = 'Generate JavaScript files containing all language localization messages';
 
-    /**
-     * Properties.
-     */
     protected Filesystem $filesystem;
     protected JsLang $jsLang;
     protected string $hashAlgo;
@@ -34,11 +31,8 @@ class GenerateCommand extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @param  \Illuminate\Filesystem\Filesystem  $filesystem
-     * @return void
      */
-    public function __construct(Filesystem $filesystem, JsLang $jsLang)
+    public function __construct(Filesystem $filesystem, JsLang $jsLang): void
     {
         parent::__construct();
 
@@ -52,10 +46,8 @@ class GenerateCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // Get hash options for versioning
         [$this->hashAlgo, $this->hashLength] = array_pad(explode(',', $this->option('hash-algo')), 2, null);
@@ -78,13 +70,8 @@ class GenerateCommand extends Command
 
     /**
      * Store the language contents in a JS file.
-     *
-     * @param  string  $locale
-     * @param  string  $type
-     * @param  string  $contents
-     * @return void
      */
-    protected function storeFile(string $locale, string $type, string $contents)
+    protected function storeFile(string $locale, string $type, string $contents): void
     {
         $hash = config('jslang.hash_prefix') . substr(hash($this->hashAlgo, $contents), 0, $this->hashLength);
         $this->hashes["{$locale}.{$type}"] = $hash;

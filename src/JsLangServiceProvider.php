@@ -11,10 +11,8 @@ class JsLangServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         // Merge the config
         $this->mergeConfigFrom(__DIR__ . '/../config/jslang.php', 'jslang');
@@ -42,10 +40,8 @@ class JsLangServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Register the commands
         if ($this->app->runningInConsole()) {
