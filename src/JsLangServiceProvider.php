@@ -17,15 +17,6 @@ class JsLangServiceProvider extends ServiceProvider
         // Merge the config
         $this->mergeConfigFrom(__DIR__ . '/../config/jslang.php', 'jslang');
 
-        // Register paths for publish
-        $this->publishes([
-            __DIR__ . '/../config/jslang.php' => config_path('jslang.php'),
-        ], 'jslang-config');
-
-        $this->publishes([
-            __DIR__ . '/../resources/js/lang.js' => resource_path('js/lang.js'),
-        ], 'jslang-script');
-
         // Register the service
         $service = function ($app) {
             return new JsLang($app->get(Filesystem::class));
@@ -49,6 +40,15 @@ class JsLangServiceProvider extends ServiceProvider
                 GenerateCommand::class,
                 ClearCommand::class,
             ]);
+
+            // Register paths for publishable files
+            $this->publishes([
+                __DIR__ . '/../config/jslang.php' => config_path('jslang.php'),
+            ], 'jslang-config');
+
+            $this->publishes([
+                __DIR__ . '/../resources/js/lang.js' => resource_path('js/lang.js'),
+            ], 'jslang-script');
         }
 
         // Register the route
